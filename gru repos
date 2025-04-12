@@ -1,0 +1,171 @@
+Here’s a complete write-up covering all major vulnerabilities in Gruyere, the deliberately insecure web app by Google, categorized by OWASP type and severity:
+
+
+---
+
+Gruyere Vulnerability Write-Up
+
+Application: Gruyere (https://google-gruyere.appspot.com/)
+Author: Google Security Team
+Purpose: Educational, intentionally vulnerable for security training.
+
+
+---
+
+High Severity Vulnerabilities
+
+1. Cross-Site Scripting (XSS)
+
+Type: Stored & Reflected XSS
+
+Location: Comment fields, search, snippets
+
+Impact: Can execute arbitrary JavaScript, steal cookies, deface UI.
+
+Payload Example:
+
+<script>alert('XSS')</script>
+
+Fix: Input sanitization, output encoding, CSP.
+
+
+
+---
+
+2. Command Injection
+
+Type: OS Command Injection
+
+Location: File upload, system interaction pages
+
+Impact: Remote code execution, system compromise
+
+Payload Example:
+
+; ls -la
+
+Fix: Whitelist inputs, use secure APIs (subprocess.run with array args in Python).
+
+
+
+---
+
+3. Access Control Bypass
+
+Type: Insecure Direct Object References (IDOR)
+
+Location: Snippet or profile modification using user ID
+
+Impact: View/edit other users' data
+
+Payload Example:
+
+GET /snippets.gtl?uid=admin
+
+Fix: Enforce role-based access control (RBAC) on server-side.
+
+
+
+---
+
+Moderate Severity Vulnerabilities
+
+4. Cross-Site Request Forgery (CSRF)
+
+Type: Session manipulation
+
+Location: Admin functions, change password
+
+Impact: Force victim to perform actions
+
+Payload Example:
+
+<img src="http://gruyere/change_password?newpw=hacked">
+
+Fix: CSRF tokens in every state-changing request
+
+
+
+---
+
+5. Authentication Bypass (Predictable Tokens)
+
+Type: Weak Session Management
+
+Location: Cookie-based sessions with weak values
+
+Impact: Brute-forcible sessions
+
+Payload: Guess session ID
+
+Fix: Use secure, random session tokens with expiration
+
+
+
+---
+
+6. Information Disclosure
+
+Type: Directory listing, error leakage
+
+Location: URL paths like /source, detailed errors in responses
+
+Impact: Reveal source code or system info
+
+Fix: Disable directory indexing, handle errors generically
+
+
+
+---
+
+Low Severity / Informational
+
+7. Clickjacking
+
+Type: UI Redress Attack
+
+Impact: Trick users into clicking hidden elements
+
+Fix: X-Frame-Options: DENY
+
+
+
+---
+
+8. Open Redirect
+
+Type: Unsafe URL redirection
+
+Location: Login redirect parameter
+
+Impact: Phishing redirection
+
+Payload:
+
+/login?next=http://evil.com
+
+Fix: Validate redirection domains
+
+
+
+---
+
+9. Lack of Rate Limiting
+
+Impact: Bruteforce attacks on login page
+
+Fix: Add throttling, CAPTCHA
+
+
+
+---
+
+Let me know if you want:
+
+Exploitation commands (e.g., curl, Burp)
+
+Fix recommendations
+
+Markdown write-up for GitHub
+
+Or a structured report version (Word/PDF)
