@@ -1,0 +1,106 @@
+This page is for emergency purpose if I get a Backlog in NS. 
+
+Question paper format : 50 marks 
+Weight distribution : 
+Either 4Q X 10M = 40M + 10M viva = 50M
+Or 1Q X 10M + 2Q X 15M + 10M viva = 50M 
+
+Q1) Find the ip address from the subnet id on which the metasploitable server is hosted. 
+Given subnet : 172.17.19.0/24 
+172.17.19.200-254 (after sometime the range was shortened to reduce the difficiulty) 
+Final answer was 172.17.19.222 
+nmap -sv (sV) 172.17.19.222 
+nmap -p- -sV 172.17.19.0/24
+Q2) Enumeration 
+Q3) Vulnerabilities finding and exploitation 
+Q4) Report : create a word document and paste SS of commands performed on kali terminal.
+Q5) Viva: learn about enum outputs and metasploitable Vulnerabilities. 
+
+☆ On answers sheet write all the steps of Q1 & Q2 like 1st cmd it's output then 2nd cmd it's output .... how you found the metasploitable server. For 2nd Q write all the enum cmds and it's outputs. 
+Q3) What Vulnerabilities you found? Cmds, names, how you exploited 
+
+Vasu's answer : 
+Q1) nmap -sn 172.17.19.0/24 (subnet id)
+This will give all the active ip addresses in that subnet. 
+nmap -Pn <individual active ip> 
+(also comes under enumeration)
+Enter all the active ip's 1 by 1 and check for open ports. 
+Enter all the active ips 1 by 1 on chrome's address bar (without https://) and check if it metasploitable server opens, that will be the correct ip address among the subnet. 
+
+Q2) Enumeration of ip address 
+a) nmap -sSV <ip>
+
+The command nmap -sSV <ip> performs a detailed scan on the target IP address to discover open ports, identify services running on those ports, and determine the version of each service.(172.17.19.222) 
+
+b) enum4linux <ip> 
+
+What enum4linux Collects
+
+Usernames and Groups: Lists local users and group memberships.
+
+Shares: Displays shared folders or drives on the server.
+
+OS Information: Attempts to identify the target system’s OS.
+
+Password Policies: Retrieves policies such as password length and complexity requirements.
+
+Network Configurations: Tries to identify the domain and workgroup of the target.
+
+Other Information: Depending on the permissions available, it may also retrieve additional information about the system or domain.
+
+c) nmap -O <target-ip>
+
+This command attempts to detect the operating system of the target by analyzing the responses from the scanned ports. This can give you more insight into the target system.
+
+d) nmap --script=default <target-ip>
+This runs a series of default Nmap scripts designed for general enumeration (e.g., service discovery, vulnerability detection, etc.).
+
+netcat cmds 
+
+Q3) Finding web and network vulnerabilities.
+a) Web vulnerabilities: 
+Ctrl+shift+C or Right click & inspect 
+Go to network tab 
+Refresh this tab 
+Find a file whose name is same as the name of website
+Go to response tab 
+Go to headers 
+Find missing headers and unupdated versions (learn about security headers, how to find vulnerabilities by looking/checking at the headers) 
+Website : securityheaders.com (not useful in exam) 
+Example open server: the name of the server was directly visible. 
+
+b) Network vulnerabilities: 
+nmap --script=vuln <ip> 
+Gives list of vulnerabilities, find and exploit 4 of these (can be used in enum) 
+
+For telnet vulnerabilities: telnet <ip> 
+In the output you'll get login and password use it to connect telnet server. 
+ftp vulnerabilities? 
+
+How to use burpsuite? Request capturing and ctrl+R (repeater) 
+Check for common network vulnerabilities and how to exploit them. 
+
+Shaunak's answer: 
+
+1) Finding server: 
+-> nmap -sn <subnet ip>
+Gives live ips in the subnet 
+(mostly 4 or 5 live ips) 
+
+nmap -F <ip> 
+nmap -Pn <ip> 
+Above 2 cmds checks the open ports of the given ip, by which we can see which ip is most vulnerable. 
+
+Check each ip on chrome and check which one contains the server.
+
+2) Enumeration: 
+-> nmap -sV <ip>
+nmap -A <ip>
+nmap -sC <ip>
+nmap -p 22,80,443 <ip>
+scans the specified ports
+nmap -p- <ip>
+scans all the 65,535 ports 
+
+Created : 09/11/24 
+There is a chatGPT folder named "NS Emergency" and "metasploit vulnerabilities list" (imp) (telnet, ftp,etc with
